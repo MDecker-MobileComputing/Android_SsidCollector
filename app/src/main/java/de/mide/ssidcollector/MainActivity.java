@@ -83,6 +83,7 @@ public class MainActivity extends Activity {
         if (scanGestartet == true) {
 
             _suchButton.setEnabled(false);
+            _ergebnisTextView.setText("");
 
         } else {
 
@@ -101,9 +102,16 @@ public class MainActivity extends Activity {
 
             List<ScanResult> scanResultList = _wifiManager.getScanResults();
 
+            StringBuffer sb = new StringBuffer();
+            for (ScanResult sr : scanResultList) {
+
+                sb.append( sr.SSID ).append("\n");
+            }
+            _ergebnisTextView.setText( sb.toString() );
+
             zeigeDialog("Scan beendet", "Anzahl WiFi-Netze gefunden: " + scanResultList.size());
 
-            _suchButton.setEnabled(false);
+            _suchButton.setEnabled(true);
         }
     }
     /* ************************** */

@@ -22,7 +22,7 @@
         android:id="@id/starteSucheButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nach SSIDs suchen"
+        android:text="Nach Namen von WiFi-Netzen suchen"
         android:layout_alignParentBottom="true"
         android:onClick="onSucheButton" />
 
