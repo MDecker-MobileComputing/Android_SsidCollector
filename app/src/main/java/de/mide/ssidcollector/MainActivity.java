@@ -1,5 +1,7 @@
 package de.mide.ssidcollector;
 
+import static android.content.pm.PackageManager.FEATURE_WIFI;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -48,12 +50,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        _ergebnisTextView = findViewById(R.id.ergebnisTextView);
+        _ergebnisTextView = findViewById(R.id.ergebnisTextView );
         _suchButton       = findViewById(R.id.starteSucheButton);
 
         Context context = getApplicationContext();
                         
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_WIFI)) {
+        if ( context.getPackageManager().hasSystemFeature(FEATURE_WIFI) == false ) {
             
             zeigeDialog("Fehler", "Gerät hat kein WLAN-Modul." );
             _suchButton.setEnabled(false);
@@ -118,10 +120,10 @@ public class MainActivity extends Activity {
             List<ScanResult> scanResultList = _wifiManager.getScanResults();
 
             StringBuffer sb = new StringBuffer();
-            for (ScanResult sr : scanResultList) {
+            for (ScanResult scanResult : scanResultList) {
 
-                sb.append( sr.SSID ).append(" ");
-                sb.append(" (MAC: ").append( sr.BSSID ).append(")"); // https://stackoverflow.com/a/61221077/1364368
+                sb.append( scanResult.SSID );
+                sb.append(" (MAC: ").append( scanResult.BSSID ).append(")\n"); // https://stackoverflow.com/a/61221077/1364368
             }
             _ergebnisTextView.setText( sb.toString() );
 
@@ -154,4 +156,5 @@ public class MainActivity extends Activity {
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
     }
+
 }
