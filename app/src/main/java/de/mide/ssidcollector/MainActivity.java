@@ -120,7 +120,8 @@ public class MainActivity extends Activity {
             StringBuffer sb = new StringBuffer();
             for (ScanResult sr : scanResultList) {
 
-                sb.append( sr.SSID ).append("\n");
+                sb.append( sr.SSID ).append(" ");
+                sb.append(" (MAC: ").append( sr.BSSID ).append(")"); // https://stackoverflow.com/a/61221077/1364368
             }
             _ergebnisTextView.setText( sb.toString() );
 
