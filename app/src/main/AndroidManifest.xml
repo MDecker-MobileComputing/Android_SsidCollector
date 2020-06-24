@@ -11,6 +11,9 @@
 
     <!-- Needed for calling method WiFiManager::getScanResults() -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    
+    <!-- Added because of this example: https://stackoverflow.com/q/50447117/1364368 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 
     <application
