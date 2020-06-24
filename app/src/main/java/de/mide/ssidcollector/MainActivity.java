@@ -18,8 +18,11 @@ import java.util.List;
 
 /**
  *
- * Beispiel für Scannen nach WLAN-Netzen:
- * <a href="https://stackoverflow.com/a/17167318/1364368">Antwort auf SO</a>
+ * Beispiele für Scannen nach WLAN-Netzen:
+ * <ul>
+ *  <li><a href="https://developer.android.com/guide/topics/connectivity/wifi-scan">Beispiel in offizieller Doku</a></li> 
+ *  <li><a href="https://stackoverflow.com/a/17167318/1364368">Antwort auf SO</a></li> 
+ * </ul>
  */
 public class MainActivity extends Activity {
 
