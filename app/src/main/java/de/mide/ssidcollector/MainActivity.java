@@ -34,10 +34,14 @@ public class MainActivity extends Activity {
 
     private ScanErgebnisBroadcastReceiver _scanErgebnisReceiver = null;
 
-    private static final IntentFilter _wifiScanErgebnisseDaIntentFilter =
+    private static final IntentFilter SCAN_RESULTS_AVAILABLE_ACTION_INTENT_FILTER =
                                 new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
 
-
+    /**
+     * Lifecycle-Methode: Layout-Datei laden, UI-Elemente holen, Überprüfung
+     * ob Gerät WLAN kann; wenn ja, dann WiFiManager holen und BroadcastReceiver
+     * registrieren.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -45,14 +49,22 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         _ergebnisTextView = findViewById(R.id.ergebnisTextView);
-
-        _suchButton = findViewById(R.id.starteSucheButton);
+        _suchButton       = findViewById(R.id.starteSucheButton);
 
         Context context = getApplicationContext();
-        _wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+                        
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_WIFI)) {
+            
+            zeigeDialog("Fehler", "Gerät hat kein WLAN-Modul." );
+            _suchButton.setEnabled(false);
+            
+        } else {
 
-        _scanErgebnisReceiver = new ScanErgebnisBroadcastReceiver();
-        registerReceiver(_scanErgebnisReceiver, _wifiScanErgebnisseDaIntentFilter);
+          _wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);            
+            
+          _scanErgebnisReceiver = new ScanErgebnisBroadcastReceiver();
+          registerReceiver(_scanErgebnisReceiver, SCAN_RESULTS_AVAILABLE_ACTION_INTENT_FILTER);
+        }
     }
 
 
@@ -68,7 +80,7 @@ public class MainActivity extends Activity {
      * @param view  Button, der Event ausgelöst hat.
      */
     public void onSucheButton(View view) {
-
+        
         if ( _wifiManager == null ) {
 
             zeigeDialog("Interner Fehler", "WiFiManager nicht gefunden." );
