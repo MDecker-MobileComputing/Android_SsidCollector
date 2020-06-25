@@ -1,6 +1,7 @@
 package de.mide.ssidcollector;
 
 import static android.content.pm.PackageManager.FEATURE_WIFI;
+import static android.net.wifi.WifiManager.SCAN_RESULTS_AVAILABLE_ACTION;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,6 +14,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
@@ -36,6 +38,9 @@ public class MainActivity extends Activity {
     /** UI-Element zur Anzeige der gefundenen WLAN-Netze. */
     private TextView _ergebnisTextView = null;
 
+    /** Fortschrittsanzeige (drehender Kreis), wird während Scan-Vorgang auf sichtbar geschaltet. */
+    private ProgressBar _progressBar = null;
+
     /** WiFiManager-Objekt, wird benötigt, um Scan-Vorgang zu starten. */
     private WifiManager _wifiManager = null;
 
@@ -43,7 +48,7 @@ public class MainActivity extends Activity {
     private ScanErgebnisBroadcastReceiver _scanErgebnisReceiver = null;
 
     /** Intent-Filter für BroadcastReceiver zum Empfang von WLAN-Scan-Ergebnissen. */
-    private static IntentFilter SCAN_RESULTS_AVAILABLE_ACTION_INTENT_FILTER = null;
+    private static IntentFilter SCAN_RESULTS_AVAILABLE_INTENT_FILTER = null;
 
 
     /**
@@ -59,8 +64,12 @@ public class MainActivity extends Activity {
 
         _ergebnisTextView = findViewById(R.id.ergebnisTextView );
         _suchButton       = findViewById(R.id.starteSucheButton);
+        _progressBar      = findViewById(R.id.progressbar      );
 
-        SCAN_RESULTS_AVAILABLE_ACTION_INTENT_FILTER = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        // ProgressBar auf unendliche Animation umschalten
+        _progressBar.setIndeterminate(true);
+
+        SCAN_RESULTS_AVAILABLE_INTENT_FILTER = new IntentFilter(SCAN_RESULTS_AVAILABLE_ACTION);
 
         Context context = getApplicationContext();
                         
@@ -75,16 +84,19 @@ public class MainActivity extends Activity {
         }
     }
 
+
     /**
      * BroadcastReceiver-Objekt zum Empfang der Scan-Ergebnisse registrieren.
      * Diese Methode muss unmittelbar vor Start eines Scan-Vorgangs aufgerufen
-     * werden.
+     * werden. Schaltet auch
      */
     private void registerBroadcastReceiver() {
 
         _scanErgebnisReceiver = new ScanErgebnisBroadcastReceiver();
 
-        registerReceiver(_scanErgebnisReceiver, SCAN_RESULTS_AVAILABLE_ACTION_INTENT_FILTER);
+        registerReceiver(_scanErgebnisReceiver, SCAN_RESULTS_AVAILABLE_INTENT_FILTER);
+
+        _progressBar.setVisibility(View.VISIBLE);
     }
 
 
@@ -98,6 +110,8 @@ public class MainActivity extends Activity {
 
             unregisterReceiver(_scanErgebnisReceiver);
         }
+
+        _progressBar.setVisibility(View.INVISIBLE);
     }
 
 

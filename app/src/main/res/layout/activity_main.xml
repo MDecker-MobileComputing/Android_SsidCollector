@@ -18,12 +18,24 @@
         android:maxLines="400"
         android:text="" />
 
+
+
     <Button
         android:id="@id/starteSucheButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nach Namen von WiFi-Netzen suchen"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@+id/progressbar"
         android:onClick="onSucheButton" />
+
+    <ProgressBar
+        android:id="@id/progressbar"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
 
 </RelativeLayout>
