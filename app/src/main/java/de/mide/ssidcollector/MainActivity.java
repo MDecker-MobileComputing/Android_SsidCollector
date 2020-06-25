@@ -19,8 +19,10 @@ import java.util.List;
 
 
 /**
+ * App zum Sammeln von Namen von WiFi-Netzen (SSIDs).
+ * <br><br>
  *
- * Beispiele für Scannen nach WLAN-Netzen:
+ * Code-Beispiele für Scannen nach WLAN-Netzen:
  * <ul>
  *  <li><a href="https://developer.android.com/guide/topics/connectivity/wifi-scan">Beispiel in offizieller Doku</a></li> 
  *  <li><a href="https://stackoverflow.com/a/17167318/1364368">Antwort auf SO</a></li> 
@@ -28,16 +30,21 @@ import java.util.List;
  */
 public class MainActivity extends Activity {
 
-    private TextView _ergebnisTextView = null;
-
+    /** Button zum Start eines Scan-Laufs. */
     private Button _suchButton = null;
 
+    /** UI-Element zur Anzeige der gefundenen WLAN-Netze. */
+    private TextView _ergebnisTextView = null;
+
+    /** WiFiManager-Objekt, wird benötigt, um Scan-Vorgang zu starten. */
     private WifiManager _wifiManager = null;
 
+    /** BroadcastReceiver-Objekt das aufgerufen wird, wenn ein Scan-Vorgang beendet ist. */
     private ScanErgebnisBroadcastReceiver _scanErgebnisReceiver = null;
 
-    private static final IntentFilter SCAN_RESULTS_AVAILABLE_ACTION_INTENT_FILTER =
-                                new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+    /** Intent-Filter für BroadcastReceiver zum Empfang von WLAN-Scan-Ergebnissen. */
+    private static IntentFilter SCAN_RESULTS_AVAILABLE_ACTION_INTENT_FILTER = null;
+
 
     /**
      * Lifecycle-Methode: Layout-Datei laden, UI-Elemente holen, Überprüfung
@@ -53,6 +60,8 @@ public class MainActivity extends Activity {
         _ergebnisTextView = findViewById(R.id.ergebnisTextView );
         _suchButton       = findViewById(R.id.starteSucheButton);
 
+        SCAN_RESULTS_AVAILABLE_ACTION_INTENT_FILTER = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+
         Context context = getApplicationContext();
                         
         if ( context.getPackageManager().hasSystemFeature(FEATURE_WIFI) == false ) {
@@ -62,10 +71,32 @@ public class MainActivity extends Activity {
             
         } else {
 
-          _wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);            
-            
-          _scanErgebnisReceiver = new ScanErgebnisBroadcastReceiver();
-          registerReceiver(_scanErgebnisReceiver, SCAN_RESULTS_AVAILABLE_ACTION_INTENT_FILTER);
+          _wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        }
+    }
+
+    /**
+     * BroadcastReceiver-Objekt zum Empfang der Scan-Ergebnisse registrieren.
+     * Diese Methode muss unmittelbar vor Start eines Scan-Vorgangs aufgerufen
+     * werden.
+     */
+    private void registerBroadcastReceiver() {
+
+        _scanErgebnisReceiver = new ScanErgebnisBroadcastReceiver();
+
+        registerReceiver(_scanErgebnisReceiver, SCAN_RESULTS_AVAILABLE_ACTION_INTENT_FILTER);
+    }
+
+
+    /**
+     * Registrierung eines BroadcastReceiver-Objekts zum Empfang der Scan-Ergebnisse
+     * aufheben.
+     */
+    private void unregisterBroadcastReceiver() {
+
+        if (_scanErgebnisReceiver != null) {
+
+            unregisterReceiver(_scanErgebnisReceiver);
         }
     }
 
@@ -73,7 +104,8 @@ public class MainActivity extends Activity {
     /**
      * Button-Event-Handler zum Triggern eines neues Scan-laufs.
      * Der Scan-Lauf ist asynchron, seine Beendigung wird über einen
-     * Broadcast-Intent mitgeteilt.
+     * Broadcast-Intent mitgeteilt. Der entsprechende BroadcastReceiver
+     * wird unmittelbar vor Beginn des Scan-Vorgangs registriert.
      * <br><br>
      *
      * Siehe <a href="https://stackoverflow.com/questions/49178307/">diese Antwort auf SO</a>
@@ -95,6 +127,7 @@ public class MainActivity extends Activity {
             return;
         }
 
+        registerBroadcastReceiver();
 
         boolean scanGestartet = _wifiManager.startScan();
         if (scanGestartet == true) {
@@ -116,6 +149,8 @@ public class MainActivity extends Activity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+
+            unregisterBroadcastReceiver();
 
             List<ScanResult> scanResultList = _wifiManager.getScanResults();
 
