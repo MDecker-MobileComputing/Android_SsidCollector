@@ -27,7 +27,7 @@
         android:text="Nach Namen von WiFi-Netzen suchen"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_toRightOf="@+id/progressbar"
+        android:layout_toLeftOf="@+id/progressbar"
         android:onClick="onSucheButton" />
 
     <ProgressBar
