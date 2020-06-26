@@ -29,6 +29,9 @@ import java.util.List;
  *  <li><a href="https://developer.android.com/guide/topics/connectivity/wifi-scan">Beispiel in offizieller Doku</a></li> 
  *  <li><a href="https://stackoverflow.com/a/17167318/1364368">Antwort auf SO</a></li> 
  * </ul>
+ * <br><br>
+ *
+ * This project is licensed under the terms of the BSD 3-Clause License.
  */
 public class MainActivity extends Activity {
 
