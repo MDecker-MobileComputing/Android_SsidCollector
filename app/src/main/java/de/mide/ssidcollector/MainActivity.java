@@ -22,7 +22,10 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
+
+import de.mide.ssidcollector.auxi.ScanResultComparator;
 
 
 /**
@@ -62,6 +65,9 @@ public class MainActivity extends Activity {
 
     /** Intent-Filter für BroadcastReceiver zum Empfang von WLAN-Scan-Ergebnissen. */
     private static IntentFilter SCAN_RESULTS_AVAILABLE_INTENT_FILTER = null;
+
+    /** Comparator-Objekt zum Sortieren der Liste der gefundenen Wifi-Netze. */
+    private static ScanResultComparator SCAN_RESULT_COMPARATOR = new ScanResultComparator();
 
     /**
      * Lifecycle-Methode: Layout-Datei laden, UI-Elemente holen, Überprüfung
@@ -251,14 +257,19 @@ public class MainActivity extends Activity {
     /* *************************** */
     /* *** Start innere Klasse *** */
     /* *************************** */
-    class ScanErgebnisBroadcastReceiver extends BroadcastReceiver {
+    private class ScanErgebnisBroadcastReceiver extends BroadcastReceiver {
 
+        /**
+         * Event-Handler-Methode für beendeten Scan-Vorgang.
+         */
         @Override
         public void onReceive(Context context, Intent intent) {
 
             unregisterBroadcastReceiver();
 
             List<ScanResult> scanResultList = _wifiManager.getScanResults();
+
+            Collections.sort(scanResultList, SCAN_RESULT_COMPARATOR);
 
             StringBuffer sb = new StringBuffer();
             sb.append("Anzahl WiFi-Netze gefunden: " + scanResultList.size() + "\n\n");
@@ -276,7 +287,6 @@ public class MainActivity extends Activity {
     /* ************************** */
     /* *** Ende innere Klasse *** */
     /* ************************** */
-
 
     /**
      * Hilfsmethode zur Anzeige eines Dialogs für Fehlermeldungen u.ä.

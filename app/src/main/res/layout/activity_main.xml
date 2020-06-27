@@ -14,6 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_above="@+id/starteSucheButton"
+        android:layout_margin="5dp"
+        android:background="#D0D0D0"
         android:scrollbars="vertical"
         android:maxLines="400"
         android:text="" />
