@@ -144,8 +144,8 @@ public class MainActivity extends Activity {
      * Callback-Methode für Anfrage Runtime Permissions beim Nutzer.
      *
      * @param requestCode  Erkennungs-Code
-     * @param permissions
-     * @param grantResults
+     * @param permissions  Array der angefragten Berechtigungen.
+     * @param grantResults  Ergebnisse (genehmigt oder abgelehnt) für einzelne Berechtigungen.
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -190,6 +190,10 @@ public class MainActivity extends Activity {
         if (_scanErgebnisReceiver != null) {
 
             unregisterReceiver(_scanErgebnisReceiver);
+
+        } else {
+
+            Log.w(TAG4LOGGING, "Keine BroadcastReceiver-Objekt, das deregistriert werden kann.");
         }
 
         _progressBar.setVisibility(View.INVISIBLE);
@@ -209,6 +213,13 @@ public class MainActivity extends Activity {
      * @param view  Button, der Event ausgelöst hat.
      */
     public void onSucheButton(View view) {
+
+        boolean hatRuntimePermission = checkRuntimePermissions();
+        if (hatRuntimePermission == false) {
+
+            _suchButton.setEnabled(false);
+            return;
+        }
         
         if ( _wifiManager == null ) {
 
@@ -250,14 +261,14 @@ public class MainActivity extends Activity {
             List<ScanResult> scanResultList = _wifiManager.getScanResults();
 
             StringBuffer sb = new StringBuffer();
+            sb.append("Anzahl WiFi-Netze gefunden: " + scanResultList.size() + "\n\n");
+
             for (ScanResult scanResult : scanResultList) {
 
                 sb.append( scanResult.SSID );
                 sb.append(" (MAC: ").append( scanResult.BSSID ).append(")\n"); // https://stackoverflow.com/a/61221077/1364368
             }
             _ergebnisTextView.setText( sb.toString() );
-
-            zeigeDialog("Scan beendet", "Anzahl WiFi-Netze gefunden: " + scanResultList.size());
 
             _suchButton.setEnabled(true);
         }
