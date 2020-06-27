@@ -19,7 +19,6 @@
         android:text="" />
 
 
-
     <Button
         android:id="@id/starteSucheButton"
         android:layout_width="wrap_content"

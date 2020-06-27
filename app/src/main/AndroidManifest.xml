@@ -9,7 +9,9 @@
     <!-- Needed for calling method WiFiManager::startScan() -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
-    <!-- Needed for calling method WiFiManager::getScanResults() -->
+    <!-- Needed for calling method WiFiManager::getScanResults()
+         Runtime Permission, muss zur Laufzeit anfgefragt werden.
+     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     
     <!-- Added because of this example: https://stackoverflow.com/q/50447117/1364368 -->

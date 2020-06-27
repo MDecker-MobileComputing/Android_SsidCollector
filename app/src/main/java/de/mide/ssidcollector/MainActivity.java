@@ -1,8 +1,12 @@
 package de.mide.ssidcollector;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static  android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static  android.content.pm.PackageManager.PERMISSION_DENIED;
 import static android.content.pm.PackageManager.FEATURE_WIFI;
 import static android.net.wifi.WifiManager.SCAN_RESULTS_AVAILABLE_ACTION;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -12,6 +16,7 @@ import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -35,6 +40,11 @@ import java.util.List;
  */
 public class MainActivity extends Activity {
 
+    public static final String TAG4LOGGING = "SsidCollector";
+
+    /** Request Code für Erkennung Callback-Aufruf für Runtime Permissions. */
+    private static int REQUEST_CODE = 123;
+
     /** Button zum Start eines Scan-Laufs. */
     private Button _suchButton = null;
 
@@ -52,7 +62,6 @@ public class MainActivity extends Activity {
 
     /** Intent-Filter für BroadcastReceiver zum Empfang von WLAN-Scan-Ergebnissen. */
     private static IntentFilter SCAN_RESULTS_AVAILABLE_INTENT_FILTER = null;
-
 
     /**
      * Lifecycle-Methode: Layout-Datei laden, UI-Elemente holen, Überprüfung
@@ -84,6 +93,75 @@ public class MainActivity extends Activity {
         } else {
 
           _wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        }
+
+        boolean hatRuntimePermissions = checkRuntimePermissions();
+        if (hatRuntimePermissions == false) {
+
+            _suchButton.setEnabled(false);
+        }
+    }
+
+
+    /**
+     * Überprüft, ob App aktuell über die für den WLAN-Scan benötigten Permissions verfügt.
+     * Wenn dies nicht der Fall ist, dann werden die Permissions auch gleich vom Nutzer
+     * angefordert.
+     *
+     * @return  {@code true} wenn die App schon die benötigten Runtime Permissions hat;
+     *          wenn {@code false}, dann werden die Berechtigungen beim Nutzer angefragt
+     *          und nach Antwort durch den Nutzer die Callback-Methode
+     *          {@code onRequestPermissionsResult(int, String[], int[])}.
+     */
+    private boolean checkRuntimePermissions() {
+
+        int apiLevel = android.os.Build.VERSION.SDK_INT;
+        if (apiLevel >= 23) {
+
+            Log.i(TAG4LOGGING, "API-Level von Gerät >= 23, also müssen Runtime-Permissions überprüft werden.");
+
+            if (checkSelfPermission(ACCESS_FINE_LOCATION) == PERMISSION_DENIED) {
+
+                String[] permissionArray = {Manifest.permission.ACCESS_FINE_LOCATION};
+                requestPermissions(permissionArray, REQUEST_CODE);
+
+                return false;
+
+            } else {
+
+                return true;
+            }
+
+        } else {
+
+            // apiLevel < 23, also gibt es noch keine Runtime Permissions
+            return true;
+        }
+    }
+
+
+    /**
+     * Callback-Methode für Anfrage Runtime Permissions beim Nutzer.
+     *
+     * @param requestCode  Erkennungs-Code
+     * @param permissions
+     * @param grantResults
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        if (requestCode == REQUEST_CODE) {
+
+            if (grantResults[0] == PERMISSION_GRANTED) {
+
+                _suchButton.setEnabled(true);
+
+            } else {
+
+                zeigeDialog("Berechtigung verweigert",
+                        "Sie haben der App die benötigten Berechtigungen verweigert, sie kann deshalb nicht genutzt werden.");
+                _suchButton.setEnabled(false);
+            }
         }
     }
 
