@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -57,6 +58,9 @@ public class MainActivity extends Activity {
     /** Fortschrittsanzeige (drehender Kreis), wird während Scan-Vorgang auf sichtbar geschaltet. */
     private ProgressBar _progressBar = null;
 
+    /** Checkbox mit Aufschrift "Kumulativ". */
+    private CheckBox _loescheVorSucheCheckbox = null;
+
     /** WiFiManager-Objekt, wird benötigt, um Scan-Vorgang zu starten. */
     private WifiManager _wifiManager = null;
 
@@ -80,9 +84,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        _ergebnisTextView = findViewById(R.id.ergebnisTextView );
-        _suchButton       = findViewById(R.id.starteSucheButton);
-        _progressBar      = findViewById(R.id.progressbar      );
+        _ergebnisTextView        = findViewById(R.id.ergebnisTextView        );
+        _suchButton              = findViewById(R.id.starteSucheButton       );
+        _progressBar             = findViewById(R.id.progressbar             );
+        _loescheVorSucheCheckbox = findViewById(R.id.loeschenVorSucheCheckbox);
 
         // ProgressBar auf unendliche Animation umschalten
         _progressBar.setIndeterminate(true);
@@ -150,7 +155,9 @@ public class MainActivity extends Activity {
      * Callback-Methode für Anfrage Runtime Permissions beim Nutzer.
      *
      * @param requestCode  Erkennungs-Code
+     *
      * @param permissions  Array der angefragten Berechtigungen.
+     *
      * @param grantResults  Ergebnisse (genehmigt oder abgelehnt) für einzelne Berechtigungen.
      */
     @Override
@@ -241,11 +248,15 @@ public class MainActivity extends Activity {
 
         registerBroadcastReceiver();
 
+        if (_loescheVorSucheCheckbox.isChecked() == false) {
+
+            _ergebnisTextView.setText("");
+        }
+
         boolean scanGestartet = _wifiManager.startScan();
         if (scanGestartet == true) {
 
             _suchButton.setEnabled(false);
-            _ergebnisTextView.setText("");
 
         } else {
 
@@ -279,7 +290,10 @@ public class MainActivity extends Activity {
                 sb.append( scanResult.SSID );
                 sb.append(" (MAC: ").append( scanResult.BSSID ).append(")\n"); // https://stackoverflow.com/a/61221077/1364368
             }
-            _ergebnisTextView.setText( sb.toString() );
+
+            sb.append("\n\n");
+
+            _ergebnisTextView.append( sb.toString() );
 
             _suchButton.setEnabled(true);
         }
