@@ -58,7 +58,10 @@ public class MainActivity extends Activity {
     /** Fortschrittsanzeige (drehender Kreis), wird während Scan-Vorgang auf sichtbar geschaltet. */
     private ProgressBar _progressBar = null;
 
-    /** Checkbox mit Aufschrift "Kumulativ". */
+    /**
+     * Checkbox mit Aufschrift "Kumulativ"; wenn angewählt, dann wird zu Beginn eines neuen
+     * Suchvorgangs das TextView-Element mit den Ergebnissen nicht gelöscht.
+     */
     private CheckBox _loescheVorSucheCheckbox = null;
 
     /** WiFiManager-Objekt, wird benötigt, um Scan-Vorgang zu starten. */
@@ -72,6 +75,7 @@ public class MainActivity extends Activity {
 
     /** Comparator-Objekt zum Sortieren der Liste der gefundenen Wifi-Netze. */
     private static ScanResultComparator SCAN_RESULT_COMPARATOR = new ScanResultComparator();
+
 
     /**
      * Lifecycle-Methode: Layout-Datei laden, UI-Elemente holen, Überprüfung
@@ -301,6 +305,7 @@ public class MainActivity extends Activity {
     /* ************************** */
     /* *** Ende innere Klasse *** */
     /* ************************** */
+
 
     /**
      * Hilfsmethode zur Anzeige eines Dialogs für Fehlermeldungen u.ä.
