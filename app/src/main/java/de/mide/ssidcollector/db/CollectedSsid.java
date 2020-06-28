@@ -2,10 +2,10 @@ package de.mide.ssidcollector.db;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
-
 
 /**
  * Entity-Klasse für ein gefundenes WLAN.

@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.mide.ssidcollector.auxi.ScanResultComparator;
-import de.mide.ssidcollector.auxi.VerbucherThread;
+import de.mide.ssidcollector.auxi.VerbucherAsyncTask;
 
 
 /**
@@ -307,7 +307,7 @@ public class MainActivity extends Activity {
 
             if (anzResult > 0) {
 
-                new VerbucherThread( scanResultList, getApplicationContext() );
+                new VerbucherAsyncTask( scanResultList, getApplicationContext() );
             }
 
             _suchButton.setEnabled(true);

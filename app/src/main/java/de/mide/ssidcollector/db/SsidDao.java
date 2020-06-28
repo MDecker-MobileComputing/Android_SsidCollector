@@ -3,12 +3,14 @@ package de.mide.ssidcollector.db;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
 
 import java.util.List;
 
 /**
  * Interface aus das DAO erzeugt wird (DAO: Data Access Object), siehe auch die Doku
  * <a href="https://developer.android.com/training/data-storage/room/accessing-data>hier</a>.
+ * DAO enthält Methoden für CRUD-Operationen auf (einer) DB-Tabelle(n).
  */
 @Dao
 public interface SsidDao {
@@ -23,12 +25,18 @@ public interface SsidDao {
     public void insertSsid(List<CollectedSsid> ssidList);
 
 
+    /**
+     * Records in Tabelle {@code CollectedSsid} zählen.
+     *
+     * @return  Anzahl in DB gespeicherte Datensätze.
+     */
+    @Query("SELECT COUNT(*) FROM CollectedSsid")
+    public int getNumberOfRows();
+
+
     /*
     @Delete
     public void deleteSsid(CollectedSsid... ssids);
-
-    @Query("SELECT COUNT(*) FROM collectedSsid")
-    public int getNumberOfRows();
 
     @Query("SELECT * FROM collectedSsid ORDER BY dateTimeOfFirstDetection desc")
     public CollectedSsid[] fetchAllSortedByAge();

@@ -14,5 +14,13 @@
  * implementation 'android.arch.persistence.room:runtime:2.2.5'
  * annotationProcessor 'android.arch.persistence.room:compiler:2.2.5'
  * </pre>
+ * <br><br>
+ *
+ * <b>Verwendung:</b>
+ * <ul>
+ *     <li>Singleton-Instanz von {@code MeineDatenbank} holen.</li>
+ *     <li>Relevantes DAO mit entsprechender Getter-Methode von {@code MeineDatenbank}-Instanz.</li>
+ *     <li>Methode für gewünschte DB-Operation an DAO-Objekt aufrufen.</li>
+ * </ul>
  */
 package de.mide.ssidcollector.db;
