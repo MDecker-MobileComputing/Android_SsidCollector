@@ -1,8 +1,8 @@
 package de.mide.ssidcollector;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static  android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static  android.content.pm.PackageManager.PERMISSION_DENIED;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static android.content.pm.PackageManager.PERMISSION_DENIED;
 import static android.content.pm.PackageManager.FEATURE_WIFI;
 import static android.net.wifi.WifiManager.SCAN_RESULTS_AVAILABLE_ACTION;
 
@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.mide.ssidcollector.auxi.ScanResultComparator;
+import de.mide.ssidcollector.auxi.VerbucherThread;
 
 
 /**
@@ -115,6 +116,7 @@ public class MainActivity extends Activity {
 
             _suchButton.setEnabled(false);
         }
+
     }
 
 
@@ -286,18 +288,27 @@ public class MainActivity extends Activity {
 
             Collections.sort(scanResultList, SCAN_RESULT_COMPARATOR);
 
+            int anzResult = scanResultList.size();
+
             StringBuffer sb = new StringBuffer();
-            sb.append("Anzahl WiFi-Netze gefunden: " + scanResultList.size() + "\n\n");
+            sb.append("Anzahl WiFi-Netze gefunden: " + anzResult + "\n\n");
 
             for (ScanResult scanResult : scanResultList) {
 
                 sb.append( scanResult.SSID );
                 sb.append(" (MAC: ").append( scanResult.BSSID ).append(")\n"); // https://stackoverflow.com/a/61221077/1364368
+
+                //_meineDatenbank.ssidDao().insertSsid();
             }
 
             sb.append("\n\n");
 
             _ergebnisTextView.append( sb.toString() );
+
+            if (anzResult > 0) {
+
+                new VerbucherThread( scanResultList, getApplicationContext() );
+            }
 
             _suchButton.setEnabled(true);
         }
