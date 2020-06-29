@@ -41,6 +41,13 @@ import de.mide.ssidcollector.auxi.VerbucherAsyncTask;
  * </ul>
  * <br><br>
  *
+ * Sammeln von WiFi-Namen wenn App im Hintergrund ist (mit Service-Klasse) nicht sinnvoll:
+ * <i>"The startScan() method performs a full scan for background apps only a few times each hour. 
+ * If a background app calls the method again soon afterward, the WifiManager class provides cached 
+ * results from the previous scan."</i>
+ * <a href="https://developer.android.com/about/versions/oreo/background-location-limits">(Quelle)</a>
+ * <br><br>
+ *
  * This project is licensed under the terms of the BSD 3-Clause License.
  */
 public class MainActivity extends Activity {
