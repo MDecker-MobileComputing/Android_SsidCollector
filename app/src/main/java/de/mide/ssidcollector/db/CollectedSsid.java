@@ -7,23 +7,25 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
+
 /**
  * Entity-Klasse für ein gefundenes WLAN.
  */
 @Entity
 public class CollectedSsid {
 
-    /** MAC address is per definition unique for each access point. */
+    /** MAC-Adresse ist per Definition eindeutig für einen WiFi-Access-Point. */
     @PrimaryKey
     @NonNull
     public String macAddress;
 
-    /** The app's purpose is it to collect the SSID of access points. */
+    /** Service Set Identifier (WiFi-Name). */
     public String ssid;
 
     /**
-     * TypeConverter is needed to convert date into a data type
-     * that is supported by SQLite, see class {@link MeineTypeConverter}.
+     * Da Date kein von SQLite unterstützter Datentyp ist werden
+     * entsprechende Konverter-Methoden benötigt, siehe Klasse
+     * {@code MeineTypeConverter}.
      */
     public Date dateTimeOfFirstDetection;
 
