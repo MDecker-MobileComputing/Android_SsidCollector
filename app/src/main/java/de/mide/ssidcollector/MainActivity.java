@@ -36,8 +36,8 @@ import de.mide.ssidcollector.auxi.VerbucherAsyncTask;
  *
  * Code-Beispiele für Scannen nach WLAN-Netzen:
  * <ul>
- *  <li><a href="https://developer.android.com/guide/topics/connectivity/wifi-scan">Beispiel in offizieller Doku</a></li> 
- *  <li><a href="https://stackoverflow.com/a/17167318/1364368">Antwort auf SO</a></li> 
+ *   <li><a href="https://developer.android.com/guide/topics/connectivity/wifi-scan">Beispiel in offizieller Doku</a></li>
+ *   <li><a href="https://stackoverflow.com/a/17167318/1364368">Antwort auf SO</a></li>
  * </ul>
  * <br><br>
  *
@@ -96,10 +96,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        _ergebnisTextView        = findViewById(R.id.ergebnisTextView        );
-        _suchButton              = findViewById(R.id.starteSucheButton       );
-        _progressBar             = findViewById(R.id.progressbar             );
-        _loescheVorSucheCheckbox = findViewById(R.id.loeschenVorSucheCheckbox);
+        _ergebnisTextView        = findViewById( R.id.ergebnisTextView         );
+        _suchButton              = findViewById( R.id.starteSucheButton        );
+        _progressBar             = findViewById( R.id.progressbar              );
+        _loescheVorSucheCheckbox = findViewById( R.id.loeschenVorSucheCheckbox );
 
         // ProgressBar auf unendliche Animation umschalten
         _progressBar.setIndeterminate(true);
