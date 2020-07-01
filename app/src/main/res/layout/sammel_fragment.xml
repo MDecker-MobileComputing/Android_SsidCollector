@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    tools:context="de.mide.ssidcollector.MainActivity">
+
+
+    <TextView
+        android:id="@+id/ergebnisTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/starteSucheButton"
+        android:layout_margin="5dp"
+        android:padding="4dp"
+        android:background="#D0D0D0"
+        android:scrollbars="vertical"
+        android:maxLines="500"
+        android:text="" />
+
+    <Button
+        android:id="@id/starteSucheButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Starte Suche"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/loeschenVorSucheCheckbox"
+        android:onClick="onSucheButton" />
+
+    <CheckBox
+        android:id="@+id/loeschenVorSucheCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/progressbar"
+        android:layout_alignParentBottom="true"
+        android:text="Kumulativ"
+        android:checked="true" />
+
+    <ProgressBar
+        android:id="@id/progressbar"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
+
+</RelativeLayout>
