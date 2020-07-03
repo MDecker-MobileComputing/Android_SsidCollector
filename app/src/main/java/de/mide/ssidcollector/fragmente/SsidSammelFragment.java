@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
  * Fragment für Seite zum eigentlichen Sammeln von 
  * SSIDs (Namen von WiFi-Netzen).
  */
-public class SsidSammelFragment extends Fragment {
+public class SsidSammelFragment extends Fragment implements View.OnClickListener  {
 
     /** Button zum Start eines Scan-Laufs. */
     private Button _suchButton = null;
@@ -66,6 +66,18 @@ public class SsidSammelFragment extends Fragment {
         _suchButton              = view.findViewById( R.id.starteSucheButton        );
         _progressBar             = view.findViewById( R.id.progressbar              );
         _loescheVorSucheCheckbox = view.findViewById( R.id.loeschenVorSucheCheckbox );
+
+        _suchButton.setOnClickListener(this);
+    }
+
+    /**
+     * Event-Handler für Button.
+     *
+     * @param view  Button, der Event ausgelöst hat.
+     */
+    public void onClick(View view) {
+
+
     }
 
 }

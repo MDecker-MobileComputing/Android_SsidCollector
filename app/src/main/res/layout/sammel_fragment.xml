@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
-    tools:context="de.mide.ssidcollector.MainActivity">
+    android:padding="5dp">
 
 
     <TextView
@@ -28,8 +26,7 @@
         android:text="Starte Suche"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/loeschenVorSucheCheckbox"
-        android:onClick="onSucheButton" />
+        android:layout_toLeftOf="@+id/loeschenVorSucheCheckbox" />
 
     <CheckBox
         android:id="@+id/loeschenVorSucheCheckbox"

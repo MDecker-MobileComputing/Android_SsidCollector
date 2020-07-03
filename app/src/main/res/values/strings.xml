@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SSID Collector</string>
+
+    <string name="schublade_auf">Navigation öffnen</string>
+    <string name="schublade_zu">Navigation schließen</string>
+
 </resources>

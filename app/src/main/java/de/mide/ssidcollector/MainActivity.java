@@ -7,10 +7,23 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 
 import android.Manifest;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.navigation.NavigationView;
+
+import de.mide.ssidcollector.fragmente.DatenbankFragment;
+import de.mide.ssidcollector.fragmente.SsidSammelFragment;
 
 
 /**
@@ -40,10 +53,30 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class MainActivity extends AppCompatActivity {
 
+    /** Tag for Logging to be used by all classes of the app. */
     public static final String TAG4LOGGING = "SsidCollector";
 
     /** Request Code für Erkennung Callback-Aufruf für Runtime Permissions. */
     private static int REQUEST_CODE = 123;
+
+    /** Toolbar zur Anzeige des Hamburger-Menüs. */
+    private Toolbar _toolbar = null;
+
+    /** Die "Schublade" (Drawer) mit den Menü-Einträgen für die Navigation. */
+    private DrawerLayout _navigationSchublade = null;
+
+    /** UI-Element mit Menü-Einträgen. */
+    private NavigationView _hauptmenue = null;
+
+    /** ActionBar-Schalter. */
+    private ActionBarDrawerToggle _actionBarSchalter = null;
+
+    /**
+     * Manager-Objekt um zur Laufzeit das zum ausgewählten Menü-Eintrag gewählte Fragment in
+     * das Platzhalter-Element (FrameLayout).
+     */
+    private FragmentManager _fragmentManager = null;
+
 
     /**
      * Lifecycle-Methode: Layout-Datei laden, UI-Elemente holen, Überprüfung
@@ -56,6 +89,119 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        checkRuntimePermissions();
+
+        _toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(_toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        _navigationSchublade = findViewById(R.id.schubladen_layout);
+
+        _hauptmenue = findViewById(R.id.navigationView);
+
+        _hauptmenue.setNavigationItemSelectedListener(
+
+                new NavigationView.OnNavigationItemSelectedListener() {
+
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                        fragmentAnzeigen(menuItem);
+                        return true;
+                    }
+                }
+        );
+
+        _fragmentManager = getSupportFragmentManager();
+
+        _actionBarSchalter = erzeugeActionBarDrawerToggle();
+        _actionBarSchalter.setDrawerIndicatorEnabled(true);
+        _actionBarSchalter.syncState();
+
+        _navigationSchublade.addDrawerListener(_actionBarSchalter);
+    }
+
+
+    /**
+     * Methode erzeugt und liefert ActionBar-Schalter zurück.
+     *
+     * @return  ActionBar-Schalter
+     */
+    private ActionBarDrawerToggle erzeugeActionBarDrawerToggle() {
+
+        return new ActionBarDrawerToggle( this,
+                                          _navigationSchublade,
+                                          _toolbar,
+                                          R.string.schublade_auf,
+                                          R.string.schublade_zu
+                                         );
+    }
+
+
+    /**
+     * Fragment passend zum Menu-Item auswählen.
+     *
+     * @param menuItem  Menu-Item, das ausgewählt wurde
+     */
+    public void fragmentAnzeigen(MenuItem menuItem) {
+
+        Fragment fragment      = null;
+        Class    fragmentClass = null;
+
+        int menuItemId = menuItem.getItemId();
+        switch( menuItemId ) {
+
+            case R.id.nav_sammeln:
+                    fragmentClass = SsidSammelFragment.class;
+                break;
+
+            case R.id.nav_datenbank:
+                    fragmentClass = DatenbankFragment.class;
+                break;
+
+            default:
+                Log.e(TAG4LOGGING, "Unbehandeltes Menu-Item " + menuItemId + " aufgerufen.");
+                zeigeDialog(this, "Interner Fehler", "Unbehandeltes Menu-Item ausgewählt.");
+        }
+
+        try {
+
+            fragment = (Fragment) fragmentClass.newInstance();
+
+        } catch (Exception ex) {
+
+            Log.e(TAG4LOGGING, "Konnte fragmentClass=\"" + fragment + "\" nicht laden.", ex);
+            zeigeDialog(this, "Interner Fehler", "Fragment-Klasse konnte nicht instanziiert werden.");
+            return;
+        }
+
+        _fragmentManager.beginTransaction().replace(R.id.platzhalterFrame, fragment).commit();
+
+        menuItem.setChecked(true);
+
+        setTitle( menuItem.getTitle() );
+
+        _navigationSchublade.closeDrawers();
+    }
+
+
+    /**
+     * Event-Handler-Methode um Navigations-Schublade auszuziehen.
+     *
+     * @param menuItem  Menü-Eintrag, der Event ausgelöst hat.
+     *
+     * @return {@code true} wenn Event in dieser Methode behandelt werden konnte.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+
+        if ( _actionBarSchalter.onOptionsItemSelected(menuItem) ) {
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(menuItem);
     }
 
 
@@ -116,6 +262,24 @@ public class MainActivity extends AppCompatActivity {
                         "Sie haben der App die benötigten Berechtigungen verweigert, sie kann deshalb nicht genutzt werden.");
             }
         }
+    }
+
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+
+        super.onPostCreate(savedInstanceState);
+
+        _actionBarSchalter.syncState();
+    }
+
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+
+        super.onConfigurationChanged(newConfig);
+
+        _actionBarSchalter.onConfigurationChanged(newConfig);
     }
 
 }
