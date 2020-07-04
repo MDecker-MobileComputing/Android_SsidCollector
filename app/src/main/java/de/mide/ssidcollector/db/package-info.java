@@ -1,5 +1,5 @@
 /**
- * Persistenz mit Room-API.
+ * Persistenz mit Room-API (Object-relationaler Mapper).
  * <br><br>
  *
  * Einstiegs-Doku:

@@ -6,7 +6,6 @@ import android.net.wifi.ScanResult;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.webkit.ConsoleMessage;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -88,7 +87,7 @@ public class VerbucherAsyncTask extends AsyncTask<Void,Void,Integer> {
 
         Log.i(TAG4LOGGING, "Datensätze via DAO in DB eingefügt.");
 
-        int numOfRows = ssidDao.getNumberOfRows();
+        int numOfRows = ssidDao.getAnzahlDatensaetze();
 
         return numOfRows;
     }

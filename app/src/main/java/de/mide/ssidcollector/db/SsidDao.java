@@ -31,7 +31,7 @@ public interface SsidDao {
      * @return  Anzahl in DB gespeicherte Datensätze.
      */
     @Query("SELECT COUNT(*) FROM CollectedSsid")
-    public int getNumberOfRows();
+    public int getAnzahlDatensaetze();
 
 
     /*

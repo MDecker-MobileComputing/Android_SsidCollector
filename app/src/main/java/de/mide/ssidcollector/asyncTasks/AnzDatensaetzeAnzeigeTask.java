@@ -46,7 +46,7 @@ public class AnzDatensaetzeAnzeigeTask extends AsyncTask<Void,Void,Integer> {
 
         SsidDao ssidDao = _meineDatenbank.ssidDao();
 
-        return ssidDao.getNumberOfRows();
+        return ssidDao.getAnzahlDatensaetze();
     }
 
 
