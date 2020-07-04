@@ -12,6 +12,9 @@ import androidx.room.TypeConverters;
  * Die Datenbank-Klasse enthält eine Getter-Methode für jedes DAO.
  * Alle Entity- und TypeConverter-Klasse müssen dieser Klasse mit den entsprechenden Annotationen
  * hinzugefügt werden.
+ * <br><br>
+ *
+ * DAO-Methoden müssen in einem Worker-Thread ausgeführt werden.
  */
 @Database(entities = {CollectedSsid.class}, version=1)
 @TypeConverters({MeineTypeConverter.class})
@@ -20,7 +23,7 @@ public abstract class MeineDatenbank extends RoomDatabase {
     /**
      * Name der Datenbank-Datei, die von SQLite3 angelegt wird.
      * DB-Datei wird im Ordner {@code /data/data/de.mide.ssidcollector/databases}
-     * angelegt.
+     * gespeichert.
      */
     private static final String DB_DATEI_NAME = "ssids.db";
 

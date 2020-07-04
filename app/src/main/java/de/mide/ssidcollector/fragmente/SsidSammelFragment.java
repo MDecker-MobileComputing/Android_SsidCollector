@@ -25,7 +25,7 @@ import java.util.List;
 import de.mide.ssidcollector.R;
 import de.mide.ssidcollector.auxi.DialogHelper;
 import de.mide.ssidcollector.auxi.ScanErgebnisComparator;
-import de.mide.ssidcollector.auxi.VerbucherAsyncTask;
+import de.mide.ssidcollector.asyncTasks.VerbucherAsyncTask;
 
 import static android.content.pm.PackageManager.FEATURE_WIFI;
 import static android.net.wifi.WifiManager.SCAN_RESULTS_AVAILABLE_ACTION;

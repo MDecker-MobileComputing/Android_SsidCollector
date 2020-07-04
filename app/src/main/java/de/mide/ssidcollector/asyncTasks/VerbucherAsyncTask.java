@@ -1,4 +1,4 @@
-package de.mide.ssidcollector.auxi;
+package de.mide.ssidcollector.asyncTasks;
 
 import static de.mide.ssidcollector.MainActivity.TAG4LOGGING;
 
