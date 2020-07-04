@@ -8,14 +8,14 @@ import android.net.wifi.ScanResult;
  * Comparator-Klasse, mit der Listen von gefunden WiFi-Netzen nach
  * dem Namen (SSID) sortiert werden können.
  */
-public class ScanResultComparator implements Comparator<ScanResult> {
+public class ScanErgebnisComparator implements Comparator<ScanResult> {
 
     /**
      * Vergleich zwei {@link ScanResult}-Objekte.
      *
-     * @param sr1  ScanResult-Objekt
+     * @param sr1  ScanResult-Objekt 1 (linke Seite des Vergleichs)
      *
-     * @param sr2  ScanResult-Objekt
+     * @param sr2  ScanResult-Objekt 2 (rechte Seite des Vergleichs)
      *
      * @return  Ergebnis des Vergleich des SSID.
      */

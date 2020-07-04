@@ -7,7 +7,11 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.wifi.ScanResult;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -21,6 +25,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Collections;
+import java.util.List;
 
 import de.mide.ssidcollector.fragmente.DatenbankFragment;
 import de.mide.ssidcollector.fragmente.SsidSammelFragment;

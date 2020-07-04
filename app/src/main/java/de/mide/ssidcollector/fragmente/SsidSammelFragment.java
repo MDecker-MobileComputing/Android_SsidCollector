@@ -1,8 +1,14 @@
 package de.mide.ssidcollector.fragmente;
 
-import de.mide.ssidcollector.R;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +19,27 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.Collections;
+import java.util.List;
+
+import de.mide.ssidcollector.R;
+import de.mide.ssidcollector.auxi.DialogHelper;
+import de.mide.ssidcollector.auxi.ScanErgebnisComparator;
+import de.mide.ssidcollector.auxi.VerbucherAsyncTask;
+
+import static android.content.pm.PackageManager.FEATURE_WIFI;
+import static android.net.wifi.WifiManager.SCAN_RESULTS_AVAILABLE_ACTION;
+import static de.mide.ssidcollector.MainActivity.TAG4LOGGING;
+
 
 /**
- * Fragment für Seite zum eigentlichen Sammeln von 
- * SSIDs (Namen von WiFi-Netzen).
+ * Fragment/Seite zum eigentlichen Sammeln von SSIDs (Namen von WiFi-Netzen).
  */
 public class SsidSammelFragment extends Fragment implements View.OnClickListener  {
+
+    /** Intent-Filter für BroadcastReceiver zum Empfang von WLAN-Scan-Ergebnissen. */
+    private static IntentFilter SCAN_RESULTS_AVAILABLE_INTENT_FILTER =
+                                        new IntentFilter(SCAN_RESULTS_AVAILABLE_ACTION);
 
     /** Button zum Start eines Scan-Laufs. */
     private Button _suchButton = null;
@@ -34,6 +55,15 @@ public class SsidSammelFragment extends Fragment implements View.OnClickListener
      * Suchvorgangs das TextView-Element mit den Ergebnissen nicht gelöscht.
      */
     private CheckBox _loescheVorSucheCheckbox = null;
+
+    /** WiFiManager-Objekt, wird benötigt, um Scan-Vorgang zu starten. */
+    private WifiManager _wifiManager = null;
+
+    /** Comparator-Objekt zum Sortieren der Liste der gefundenen Wifi-Netze. */
+    private static ScanErgebnisComparator SCAN_RESULT_COMPARATOR = new ScanErgebnisComparator();
+
+    /** BroadcastReceiver-Objekt das aufgerufen wird, wenn ein Scan-Vorgang beendet ist. */
+    private ScanErgebnisBroadcastReceiver _scanErgebnisReceiver = null;
 
 
     /**
@@ -68,6 +98,22 @@ public class SsidSammelFragment extends Fragment implements View.OnClickListener
         _loescheVorSucheCheckbox = view.findViewById( R.id.loeschenVorSucheCheckbox );
 
         _suchButton.setOnClickListener(this);
+
+        // ProgressBar auf unendliche Animation umschalten
+        _progressBar.setIndeterminate(true);
+
+        Context context = getActivity().getApplicationContext();
+
+        if ( context.getPackageManager().hasSystemFeature(FEATURE_WIFI) == false ) {
+
+            DialogHelper.zeigeDialog(context, "Fehler", "Gerät hat kein WLAN-Modul." );
+            _suchButton.setEnabled(false);
+
+        } else {
+
+            _wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        }
+
     }
 
     /**
@@ -77,7 +123,113 @@ public class SsidSammelFragment extends Fragment implements View.OnClickListener
      */
     public void onClick(View view) {
 
+        if ( _wifiManager == null ) {
 
+            DialogHelper.zeigeDialog(getActivity(), "Interner Fehler", "WiFiManager nicht gefunden." );
+            return;
+        }
+
+        if ( _wifiManager.isWifiEnabled() == false ) {
+
+            DialogHelper.zeigeDialog(getActivity(), "Fehler", "WLAN ist nicht eingeschaltet." );
+            return;
+        }
+
+        registerBroadcastReceiver();
+
+        if (_loescheVorSucheCheckbox.isChecked() == false) {
+
+            _ergebnisTextView.setText("");
+        }
+
+        boolean scanGestartet = _wifiManager.startScan();
+        if (scanGestartet == true) {
+
+            _suchButton.setEnabled(false);
+
+        } else {
+
+            DialogHelper.zeigeDialog(getActivity(),"Fehler", "Scan konnte nicht gestartet werden." );
+        }
+    }
+
+
+    /* *************************** */
+    /* *** Start innere Klasse *** */
+    /* *************************** */
+    private class ScanErgebnisBroadcastReceiver extends BroadcastReceiver {
+
+        /**
+         * Event-Handler-Methode für beendeten Scan-Vorgang.
+         */
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            unregisterBroadcastReceiver();
+
+            List<ScanResult> scanResultList = _wifiManager.getScanResults();
+
+            Collections.sort(scanResultList, SCAN_RESULT_COMPARATOR);
+
+            int anzResult = scanResultList.size();
+
+            StringBuffer sb = new StringBuffer();
+            sb.append("Anzahl WiFi-Netze gefunden: " + anzResult + "\n\n");
+
+            for (ScanResult scanResult : scanResultList) {
+
+                sb.append( scanResult.SSID );
+                sb.append(" (MAC: ").append( scanResult.BSSID ).append(")\n"); // https://stackoverflow.com/a/61221077/1364368
+            }
+
+            sb.append("\n\n");
+
+            _ergebnisTextView.append( sb.toString() );
+
+            if (anzResult > 0) {
+
+                new VerbucherAsyncTask( scanResultList, getActivity().getApplicationContext() );
+            }
+
+            _suchButton.setEnabled(true);
+        }
+    }
+    /* ************************** */
+    /* *** Ende innere Klasse *** */
+    /* ************************** */
+
+
+    /**
+     * BroadcastReceiver-Objekt zum Empfang der Scan-Ergebnisse registrieren.
+     * Diese Methode muss unmittelbar vor Start eines Scan-Vorgangs aufgerufen
+     * werden. Schaltet auch
+     */
+    private void registerBroadcastReceiver() {
+
+        _scanErgebnisReceiver = new ScanErgebnisBroadcastReceiver();
+
+        getActivity().registerReceiver(_scanErgebnisReceiver, SCAN_RESULTS_AVAILABLE_INTENT_FILTER);
+
+        _progressBar.setVisibility(View.VISIBLE);
+    }
+
+
+    /**
+     * Registrierung eines BroadcastReceiver-Objekts zum Empfang der Scan-Ergebnisse
+     * aufheben.
+     */
+    private void unregisterBroadcastReceiver() {
+
+        if (_scanErgebnisReceiver != null) {
+
+            getActivity().unregisterReceiver(_scanErgebnisReceiver);
+
+        } else {
+
+            Log.w(TAG4LOGGING, "Keine BroadcastReceiver-Objekt, das deregistriert werden kann.");
+        }
+
+        _progressBar.setVisibility(View.INVISIBLE);
     }
 
 }
