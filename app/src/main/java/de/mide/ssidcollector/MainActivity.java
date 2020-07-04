@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout _navigationSchublade = null;
 
     /** UI-Element mit Menü-Einträgen. */
-    private NavigationView _hauptmenue = null;
+    private NavigationView _hauptmenueNavigationView = null;
 
     /** ActionBar-Schalter. */
     private ActionBarDrawerToggle _actionBarSchalter = null;
@@ -91,16 +91,19 @@ public class MainActivity extends AppCompatActivity {
 
         checkRuntimePermissions();
 
+
         _toolbar = findViewById(R.id.toolbar);
+
+        _navigationSchublade = findViewById(R.id.schubladen_layout);
+
+        _hauptmenueNavigationView = findViewById(R.id.navigationView);
+
         setSupportActionBar(_toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        _navigationSchublade = findViewById(R.id.schubladen_layout);
 
-        _hauptmenue = findViewById(R.id.navigationView);
-
-        _hauptmenue.setNavigationItemSelectedListener(
+        _hauptmenueNavigationView.setNavigationItemSelectedListener(
 
                 new NavigationView.OnNavigationItemSelectedListener() {
 
@@ -113,13 +116,17 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-        _fragmentManager = getSupportFragmentManager();
 
+        _fragmentManager   = getSupportFragmentManager();
         _actionBarSchalter = erzeugeActionBarDrawerToggle();
+
         _actionBarSchalter.setDrawerIndicatorEnabled(true);
         _actionBarSchalter.syncState();
 
         _navigationSchublade.addDrawerListener(_actionBarSchalter);
+
+        MenuItem defaultMenuItem = _hauptmenueNavigationView.getMenu().findItem(R.id.nav_sammeln);
+        fragmentAnzeigen(defaultMenuItem);
     }
 
 
@@ -140,9 +147,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * Fragment passend zum Menu-Item auswählen.
+     * Fragment passend zum gerade ausgewählten Menu-Item auswählen.
      *
-     * @param menuItem  Menu-Item, das ausgewählt wurde
+     * @param menuItem  Menu-Item, das ausgewählt wurde.
      */
     public void fragmentAnzeigen(MenuItem menuItem) {
 
@@ -258,13 +265,17 @@ public class MainActivity extends AppCompatActivity {
 
             if (grantResults[0] != PERMISSION_GRANTED) {
 
-                zeigeDialog(this, "Berechtigung verweigert",
+                zeigeDialog(this,
+                        "Berechtigung verweigert",
                         "Sie haben der App die benötigten Berechtigungen verweigert, sie kann deshalb nicht genutzt werden.");
             }
         }
     }
 
 
+    /**
+     * Synchronisierung von ActionBar-Schalter nach Wiederherstellung oder Drehen des Geräts.
+     */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
 
@@ -274,6 +285,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Siehe {@link #onPostCreate(Bundle)}.
+     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
 

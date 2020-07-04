@@ -6,10 +6,12 @@
             android:id="@+id/nav_sammeln"
             android:title="SSIDs sammeln" />
 
-
         <item
             android:id="@+id/nav_datenbank"
             android:title="Datenbank" />
 
     </group>
+
+    <!-- Attribut android:checked="true" für ein Menu-Item funktioniert nicht. -->
+
 </menu>
