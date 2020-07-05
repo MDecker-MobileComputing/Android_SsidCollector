@@ -1,5 +1,7 @@
 package de.mide.ssidcollector.db;
 
+import android.database.Cursor;
+
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -33,6 +35,14 @@ public interface SsidDao {
     @Query("SELECT COUNT(*) FROM CollectedSsid")
     public int getAnzahlDatensaetze();
 
+
+    /**
+     * Cursor mit allen Records sortiert nach WiFi-Name aufsteigend.
+     *
+     * @return  Cursor zur Abfrage aller Records
+     */
+    @Query("SELECT ID as _id FROM CollectedSsid ORDER BY ssid ASC")
+    public Cursor getCursorAll();
 
     /*
     @Delete

@@ -9,7 +9,7 @@ import androidx.room.TypeConverters;
 
 
 /**
- * Die Datenbank-Klasse enthält eine Getter-Methode für jedes DAO.
+ * Die Datenbank-Klasse enthält eine Getter-Methode für die DAOs.
  * Alle Entity- und TypeConverter-Klasse müssen dieser Klasse mit den entsprechenden Annotationen
  * hinzugefügt werden.
  * <br><br>
@@ -39,8 +39,8 @@ public abstract class MeineDatenbank extends RoomDatabase {
 
 
     /**
-     * Getter für Singleton-Instanz der vorliegenden Klasse; bei Bedarf wird
-     * diese Instanz erzeugt.
+     * Getter für Singleton-Instanz der vorliegenden Klasse; bei Bedarf wird diese Instanz
+     * erzeugt.
      *
      * @param context  Application Context, wird für evtl. Erzeugung der Singleton-Instanz
      *                 benötigt.
@@ -56,7 +56,9 @@ public abstract class MeineDatenbank extends RoomDatabase {
                             context.getApplicationContext(),
                             MeineDatenbank.class,
                             DB_DATEI_NAME
-                    ).build();
+                    )
+                    .allowMainThreadQueries() // nicht empfohlen
+                    .build();
         }
 
         return SINGLETON_INSTANCE;
