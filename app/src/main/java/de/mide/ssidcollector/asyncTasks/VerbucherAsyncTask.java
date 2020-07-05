@@ -11,6 +11,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 import de.mide.ssidcollector.db.CollectedSsid;
 import de.mide.ssidcollector.db.MeineDatenbank;
@@ -30,6 +32,8 @@ public class VerbucherAsyncTask extends AsyncTask<Void,Void,Integer> {
     /** Application Context; wird für DB-Zugriff und Erzeugung von Toast-Objekt benötigt. */
     private Context _context = null;
 
+    /** Zufallsgenerator für Verhashung. */
+    private Random _random = new Random();
 
     /**
      * AsyncTask erzeugen und gleich starten.
@@ -71,9 +75,13 @@ public class VerbucherAsyncTask extends AsyncTask<Void,Void,Integer> {
 
             CollectedSsid collectedSsid = new CollectedSsid();
 
-            collectedSsid.macAddress               = scanResult.BSSID;
+            String macAdresse = scanResult.BSSID;
+
+            collectedSsid.macAddress               = macAdresse;
             collectedSsid.ssid                     = scanResult.SSID;
             collectedSsid.dateTimeOfFirstDetection = jetztDate;
+
+            collectedSsid._id = macStringToLongHash(macAdresse);
 
             collectedSsidList.add(collectedSsid);
         }
@@ -106,6 +114,31 @@ public class VerbucherAsyncTask extends AsyncTask<Void,Void,Integer> {
                    "Anzahl Datensätze in DB: " + anzDatensaetze,
                         Toast.LENGTH_LONG
                       ).show();
+    }
+
+
+    /**
+     * Methode um MAC-Adresse in einen long-Wert zu verhashen,
+     * siehe auch
+     * <a href="https://stackoverflow.com/a/46095268/1364368">diese Antwort</a>
+     * (wenn ein Access Point mehrere APs bereitstellt, dann haben diese evtl. alle
+     *  dieselbe MAC-Adresse).
+     *
+     * @param macAddress  MAC-Adresse, die verhasht werden soll.
+     *
+     * @return  Hash-Wert für {@code macAddress} + Zufallszahl.
+     */
+    private long macStringToLongHash(String macAddress) {
+
+        int zufallswert = _random.nextInt();
+
+        String hashInput = macAddress + zufallswert;
+
+        byte[] byteArray = hashInput.getBytes();
+
+        UUID uuid = UUID.nameUUIDFromBytes(byteArray);
+
+        return uuid.getMostSignificantBits();
     }
 
 }

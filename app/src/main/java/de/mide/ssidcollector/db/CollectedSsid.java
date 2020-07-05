@@ -19,8 +19,14 @@ public class CollectedSsid {
     @NonNull
     public String macAddress;
 
-    /** Service Set Identifier (WiFi-Name). */
+    /** Name von WiFi-Netzt (SSID: Service Set Identifier). */
     public String ssid;
+
+    /**
+     * Spalte "_id" wird von CursorAdapter benötigt, wird mit verhashtem String von
+     * Mac-Adresse gefüllt.
+     */
+    public long _id;
 
     /**
      * Da Date kein von SQLite unterstützter Datentyp ist werden
