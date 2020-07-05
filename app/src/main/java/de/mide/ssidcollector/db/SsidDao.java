@@ -24,7 +24,7 @@ public interface SsidDao {
      * @param ssidList Einzufügende Datensätze.
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insertSsid(List<CollectedSsid> ssidList);
+    public void insertSsid(List<CollectedSsidEntity> ssidList);
 
 
     /**
@@ -32,7 +32,7 @@ public interface SsidDao {
      *
      * @return  Anzahl in DB gespeicherte Datensätze.
      */
-    @Query("SELECT COUNT(*) FROM CollectedSsid")
+    @Query("SELECT COUNT(*) FROM CollectedSsidEntity")
     public int getAnzahlDatensaetze();
 
 
@@ -43,7 +43,7 @@ public interface SsidDao {
      *
      * @return  Cursor zur Abfrage aller Records
      */
-    @Query("SELECT *, 1 as _id FROM CollectedSsid ORDER BY ssid ASC")
+    @Query("SELECT *, 1 as _id FROM CollectedSsidEntity ORDER BY ssid ASC")
     public Cursor getCursorAll();
 
 

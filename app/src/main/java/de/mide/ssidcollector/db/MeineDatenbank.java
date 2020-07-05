@@ -16,7 +16,7 @@ import androidx.room.TypeConverters;
  *
  * DAO-Methoden müssen in einem Worker-Thread ausgeführt werden.
  */
-@Database(entities = {CollectedSsid.class}, version=1)
+@Database(entities = {CollectedSsidEntity.class}, version=1)
 @TypeConverters({MeineTypeConverter.class})
 public abstract class MeineDatenbank extends RoomDatabase {
 
@@ -33,7 +33,7 @@ public abstract class MeineDatenbank extends RoomDatabase {
     /**
      * Getter für {@code SsidDao}.
      *
-     * @return  Data Access Object für Entity-Klasse {@link CollectedSsid}.
+     * @return  Data Access Object für Entity-Klasse {@link CollectedSsidEntity}.
      */
     public abstract SsidDao ssidDao();
 
@@ -59,7 +59,7 @@ public abstract class MeineDatenbank extends RoomDatabase {
                             MeineDatenbank.class,
                             DB_DATEI_NAME
                     )
-                    .allowMainThreadQueries() // nicht empfohlen
+                    .allowMainThreadQueries() // siehe https://github.com/MDecker-MobileComputing/Android_SsidCollector/issues/1
                     .build();
         }
 

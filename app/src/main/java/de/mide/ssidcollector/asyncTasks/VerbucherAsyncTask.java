@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import de.mide.ssidcollector.db.CollectedSsid;
+import de.mide.ssidcollector.db.CollectedSsidEntity;
+import de.mide.ssidcollector.db.CollectedSsidEntity;
 import de.mide.ssidcollector.db.MeineDatenbank;
 import de.mide.ssidcollector.db.SsidDao;
 
@@ -69,11 +70,11 @@ public class VerbucherAsyncTask extends AsyncTask<Void,Void,Integer> {
 
         // Ergebnisdatensätze in CollectedSsid-Objekte umkopieren
 
-        List<CollectedSsid> collectedSsidList = new ArrayList<>( _scanResultList.size() );
+        List<CollectedSsidEntity> collectedSsidList = new ArrayList<>( _scanResultList.size() );
 
         for (ScanResult scanResult: _scanResultList) {
 
-            CollectedSsid collectedSsid = new CollectedSsid();
+            CollectedSsidEntity collectedSsid = new CollectedSsidEntity();
 
             String macAdresse = scanResult.BSSID;
 

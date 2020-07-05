@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5e5ebd3277c92931e60006255b466b37",
+    "identityHash": "f4414ae42f0fd2e81999c50a2dbde298",
     "entities": [
       {
-        "tableName": "CollectedSsid",
+        "tableName": "CollectedSsidEntity",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`macAddress` TEXT NOT NULL, `ssid` TEXT, `_id` INTEGER NOT NULL, `dateTimeOfFirstDetection` INTEGER, PRIMARY KEY(`macAddress`))",
         "fields": [
           {
@@ -21,7 +21,7 @@
             "notNull": false
           },
           {
-            "fieldPath": "_id",
+            "fieldPath": "id",
             "columnName": "_id",
             "affinity": "INTEGER",
             "notNull": true
@@ -45,7 +45,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5e5ebd3277c92931e60006255b466b37\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f4414ae42f0fd2e81999c50a2dbde298\")"
     ]
   }
 }

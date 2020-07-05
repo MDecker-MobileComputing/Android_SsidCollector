@@ -13,7 +13,7 @@ import java.util.Date;
  * Entity-Klasse für ein gefundenes WLAN.
  */
 @Entity
-public class CollectedSsid {
+public class CollectedSsidEntity {
 
     /** MAC-Adresse ist per Definition eindeutig für einen WiFi-Access-Point. */
     @PrimaryKey
