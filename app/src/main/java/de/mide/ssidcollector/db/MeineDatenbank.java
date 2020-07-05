@@ -37,6 +37,8 @@ public abstract class MeineDatenbank extends RoomDatabase {
      */
     public abstract SsidDao ssidDao();
 
+    //public abstract NochEinDao nochEinDao();
+
 
     /**
      * Getter für Singleton-Instanz der vorliegenden Klasse; bei Bedarf wird diese Instanz
