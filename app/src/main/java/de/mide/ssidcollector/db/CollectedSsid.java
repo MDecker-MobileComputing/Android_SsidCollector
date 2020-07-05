@@ -1,6 +1,7 @@
 package de.mide.ssidcollector.db;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
 import androidx.room.PrimaryKey;
@@ -24,9 +25,13 @@ public class CollectedSsid {
 
     /**
      * Spalte "_id" wird von CursorAdapter benötigt, wird mit verhashtem String von
-     * Mac-Adresse gefüllt.
+     * Mac-Adresse gefüllt. Spalten-Name wird mit {@code ColumnInfo} definiert,
+     * damit man diese Member-Variable nicht abweichend von den anderen Member-
+     * Variablen in dieser Klasse mit einem vorangestellten Unterstrich benennen
+     * muss.
      */
-    public long _id;
+    @ColumnInfo(name = "_id")
+    public long id;
 
     /**
      * Da Date kein von SQLite unterstützter Datentyp ist werden

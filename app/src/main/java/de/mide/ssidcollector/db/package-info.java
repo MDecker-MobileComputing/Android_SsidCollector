@@ -30,6 +30,18 @@
  *     shell> cd /data/data/de.mide.ssidcollector/databases
  *     shell> sqlite ssids.db
  * </pre>
+ * Wenn Root-Rechte benötigt werden, dann ADB-Dämon mit {@code adb root} neu starten und dann mit
+ * {@code adb shell} einloggen.
+ * <br><br>
+ *
+ * Datenbank-Schema interaktiv mit SQLite abfragen:
+ * <pre>
+ * sqlite> .schema
+ * sqlite> CREATE TABLE android_metadata (locale TEXT);
+ * sqlite> CREATE TABLE room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT);
+ * sqlite> CREATE TABLE `CollectedSsid` (`macAddress` TEXT NOT NULL, `ssid` TEXT, `dateTimeOfFirstDetection` INTEGER, PRIMARY KEY(`macAddress`));
+ * </pre>
+ * <br><br>
  *
  * Konfiguration in Datei {@code app/build.gradle}, damit während Compilierung keine Warnung kommt, weil
  * Schema nicht ausgegeben werden kann
@@ -42,14 +54,5 @@
  * }
  * </pre>
  * Schema wird in Form einer JSON-Datei in Ordner {@code app/schemas} geschrieben.
- * <br><br>
- *
- * Datenbank-Schema interaktiv mit SQLite abfragen:
- * <pre>
- * sqlite> .schema
- * sqlite> CREATE TABLE android_metadata (locale TEXT);
- * sqlite> CREATE TABLE room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT);
- * sqlite> CREATE TABLE `CollectedSsid` (`macAddress` TEXT NOT NULL, `ssid` TEXT, `dateTimeOfFirstDetection` INTEGER, PRIMARY KEY(`macAddress`));
- * </pre>
  */
 package de.mide.ssidcollector.db;

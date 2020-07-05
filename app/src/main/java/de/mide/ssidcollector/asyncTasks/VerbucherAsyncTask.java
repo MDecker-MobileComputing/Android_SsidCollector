@@ -81,7 +81,7 @@ public class VerbucherAsyncTask extends AsyncTask<Void,Void,Integer> {
             collectedSsid.ssid                     = scanResult.SSID;
             collectedSsid.dateTimeOfFirstDetection = jetztDate;
 
-            collectedSsid._id = macStringToLongHash(macAdresse);
+            collectedSsid.id = macStringToLongHash(macAdresse);
 
             collectedSsidList.add(collectedSsid);
         }

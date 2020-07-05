@@ -268,6 +268,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
+        if (permissions.length == 0) {
+
+            Log.w(TAG4LOGGING, "Callback-Methode für RuntimePermissions hat Antwort für 0 Permissions enthalten!");
+            return;
+        }
+
         if (requestCode == REQUEST_CODE) {
 
             if (grantResults[0] != PERMISSION_GRANTED) {
