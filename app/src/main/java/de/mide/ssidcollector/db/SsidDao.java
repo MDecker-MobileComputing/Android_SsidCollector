@@ -38,11 +38,14 @@ public interface SsidDao {
 
     /**
      * Cursor mit allen Records sortiert nach WiFi-Name aufsteigend.
+     * Konstanter Wert "1" für Spalte "_id", da diese von {@link android.widget.CursorAdapter}
+     * benötigt wird.
      *
      * @return  Cursor zur Abfrage aller Records
      */
-    @Query("SELECT ID as _id FROM CollectedSsid ORDER BY ssid ASC")
+    @Query("SELECT *, 1 as _id FROM CollectedSsid ORDER BY ssid ASC")
     public Cursor getCursorAll();
+
 
     /*
     @Delete

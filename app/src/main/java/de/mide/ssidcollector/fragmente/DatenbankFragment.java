@@ -64,7 +64,9 @@ public class DatenbankFragment extends Fragment {
 
         Cursor cursor = ssidDao.getCursorAll();
 
-        MeinCursorAdapter adapter = new MeinCursorAdapter( getActivity(), cursor, 0); // flags=0
+        MeinCursorAdapter cursorAdapter = new MeinCursorAdapter( getActivity(), cursor, 0); // flags=0
+
+        _listView.setAdapter(cursorAdapter);
     }
 
 

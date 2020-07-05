@@ -1,14 +1,13 @@
 package de.mide.ssidcollector.auxi;
 
-
+import static de.mide.ssidcollector.MainActivity.TAG4LOGGING;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 import de.mide.ssidcollector.R;
-import de.mide.ssidcollector.db.MeineDatenbank;
-import de.mide.ssidcollector.db.SsidDao;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +47,8 @@ public class MeinCursorAdapter extends CursorAdapter {
         super(context, cursor, flags);
 
         _inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        _colIndexSsid = cursor.getColumnIndex("ssid");
     }
 
 
@@ -85,6 +86,8 @@ public class MeinCursorAdapter extends CursorAdapter {
         TextView textView = view.findViewById(R.id.wifiNameTextview);
 
         String ssid = cursor.getString( _colIndexSsid );
+
+        Log.i( TAG4LOGGING, "bindView aufgerufen für SSID=" + ssid);
 
         textView.setText(ssid);
     }
