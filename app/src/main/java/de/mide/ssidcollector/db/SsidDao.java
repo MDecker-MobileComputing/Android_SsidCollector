@@ -10,9 +10,13 @@ import androidx.room.Query;
 import java.util.List;
 
 /**
- * Interface aus das DAO erzeugt wird (DAO: Data Access Object), siehe auch die Doku
+ * Interface aus dem das DAO erzeugt wird (DAO: Data Access Object), siehe auch die Doku
  * <a href="https://developer.android.com/training/data-storage/room/accessing-data>hier</a>.
  * DAO enthält Methoden für CRUD-Operationen auf (einer) DB-Tabelle(n).
+ * <br><br>
+ *
+ * Mehrere DAOs können in einem Repository-Objekt zusammengefasst werden (Best Practice, kein
+ * Library-Support dafür).
  */
 @Dao
 public interface SsidDao {
