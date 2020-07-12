@@ -15,8 +15,8 @@ import java.util.List;
  * DAO enthält Methoden für CRUD-Operationen auf (einer) DB-Tabelle(n).
  * <br><br>
  *
- * Mehrere DAOs können in einem Repository-Objekt zusammengefasst werden (Best Practice, kein
- * Library-Support dafür).
+ * Mehrere DAOs können in einem Repository-Objekt zusammengefasst werden (Best Practice, es gibt
+ * keinen Library-Support dafür).
  */
 @Dao
 public interface SsidDao {
@@ -25,7 +25,7 @@ public interface SsidDao {
      * Datensatz mit gefundenem WiFi-Netz einfügen; wenn MAC-Adresse (Primär-Schlüssel) schon
      * in Tabelle vorhanden, dann wird die Einfüge-Operation einfach ignoriert.
      *
-     * @param ssidList Einzufügende Datensätze.
+     * @param ssidList  Einzufügende Datensätze.
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public void insertSsid(List<CollectedSsidEntity> ssidList);
