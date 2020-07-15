@@ -74,12 +74,16 @@ public class VerbucherAsyncTask extends AsyncTask<Void,Void,Integer> {
 
         for (ScanResult scanResult: _scanResultList) {
 
-            CollectedSsidEntity collectedSsid = new CollectedSsidEntity();
+            String SSID  = scanResult.SSID;
+
+            if (SSID == null || SSID.trim().length() == 0) { continue; }
 
             String macAdresse = scanResult.BSSID;
 
+            CollectedSsidEntity collectedSsid = new CollectedSsidEntity();
+
             collectedSsid.macAddress               = macAdresse;
-            collectedSsid.ssid                     = scanResult.SSID;
+            collectedSsid.ssid                     = SSID;
             collectedSsid.dateTimeOfFirstDetection = jetztDate;
 
             collectedSsid.id = macStringToLongHash(macAdresse);
