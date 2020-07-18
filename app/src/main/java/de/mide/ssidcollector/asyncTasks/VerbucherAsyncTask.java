@@ -60,7 +60,7 @@ public class VerbucherAsyncTask extends AsyncTask<Void,Void,Integer> {
      *
      * @param voids  Dummy-Input-Argument
      *
-     * @return  Anzahl Records, die nach Einfüger-Operation in DB ist.
+     * @return  Anzahl Records, die nach Einfüge-Operation in DB ist.
      */
     @Override
     protected Integer doInBackground(Void... voids) {
@@ -76,6 +76,7 @@ public class VerbucherAsyncTask extends AsyncTask<Void,Void,Integer> {
 
             String SSID  = scanResult.SSID;
 
+            // Leere SSID ignorieren
             if (SSID == null || SSID.trim().length() == 0) { continue; }
 
             String macAdresse = scanResult.BSSID;
