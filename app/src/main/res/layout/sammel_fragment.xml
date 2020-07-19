@@ -35,7 +35,7 @@
         android:layout_toLeftOf="@+id/progressbar"
         android:layout_alignParentBottom="true"
         android:text="Kumulativ"
-        android:checked="true" />
+        android:checked="false" />
 
     <ProgressBar
         android:id="@id/progressbar"

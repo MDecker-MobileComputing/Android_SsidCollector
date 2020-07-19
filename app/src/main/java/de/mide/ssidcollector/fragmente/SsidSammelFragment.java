@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -51,9 +50,6 @@ public class SsidSammelFragment extends Fragment implements View.OnClickListener
     /** Fortschrittsanzeige (drehender Kreis), wird während Scan-Vorgang auf sichtbar geschaltet. */
     private ProgressBar _progressBar = null;
 
-    /** ListView-Element zur anzeige aller gespeicherten Datensätze. */
-    private ListView _listView = null;
-
     /**
      * Checkbox mit Aufschrift "Kumulativ"; wenn angewählt, dann wird zu Beginn eines neuen
      * Suchvorgangs das TextView-Element mit den Ergebnissen nicht gelöscht.
@@ -84,9 +80,8 @@ public class SsidSammelFragment extends Fragment implements View.OnClickListener
 
 
     /**
-     * Referenzen auf einzelne UI-Elemente holen und in Member-Variablen
-     * speichern. Es wird auch die Fragment-Instanz als Event-Listener
-     * für die Buttons registriert.
+     * Referenzen auf einzelne UI-Elemente holen und in Member-Variablen speichern.
+     * Es wird auch die Fragment-Instanz als Event-Listener für die Buttons registriert.
      *
      * @param view  Referenz auf View-Objekt, das von Methode <i>onCreateView()</i>
      *              mit Inflater erstellt und mit return zurückgegeben wurde.
@@ -100,7 +95,6 @@ public class SsidSammelFragment extends Fragment implements View.OnClickListener
         _suchButton              = view.findViewById( R.id.starteSucheButton        );
         _progressBar             = view.findViewById( R.id.progressbar              );
         _loescheVorSucheCheckbox = view.findViewById( R.id.loeschenVorSucheCheckbox );
-        _listView                = view.findViewById( R.id.ssidListview             );
 
         _suchButton.setOnClickListener(this);
 
@@ -118,8 +112,8 @@ public class SsidSammelFragment extends Fragment implements View.OnClickListener
 
             _wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         }
-
     }
+
 
     /**
      * Event-Handler für Button.
