@@ -41,6 +41,11 @@ public class SsidSammelFragment extends Fragment implements View.OnClickListener
     private static IntentFilter SCAN_RESULTS_AVAILABLE_INTENT_FILTER =
                                         new IntentFilter(SCAN_RESULTS_AVAILABLE_ACTION);
 
+    /** Eine Millisekunde hat 1 Mio Nanosekunden, siehe auch diesen
+     * <a href="https://de.wikipedia.org/wiki/Sekunde#Mit_der_Sekunde_zusammenh%C3%A4ngende_Einheiten"">Artikel auf dt. Wikipedia.</a>
+     */
+    private static long NANOSEKUNDEN_PRO_MILLISEKUNDEN = 1_000_000;
+
     /** Button zum Start eines Scan-Laufs. */
     private Button _suchButton = null;
 
@@ -64,6 +69,18 @@ public class SsidSammelFragment extends Fragment implements View.OnClickListener
 
     /** BroadcastReceiver-Objekt das aufgerufen wird, wenn ein Scan-Vorgang beendet ist. */
     private ScanErgebnisBroadcastReceiver _scanErgebnisReceiver = null;
+
+    /**
+     * Startzeitpunkt für Messung Dauer von Scan-Vorgang, wird mit Wert von Methode
+     * {@link System#nanoTime()} gefüllt.
+     */
+    private long _zeitmessungStart = 0;
+
+    /**
+     * Endzeitpunkt für Messung Dauer von Scan-Vorgang,
+     * wird mit Wert von {@link System#nanoTime()} gefüllt.
+     */
+    private long _zeitmessungEnde = 0;
 
 
     /**
@@ -116,7 +133,7 @@ public class SsidSammelFragment extends Fragment implements View.OnClickListener
 
 
     /**
-     * Event-Handler für Button.
+     * Event-Handler für Button, startet den Scan-Vorgang.
      *
      * @param view  Button, der Event ausgelöst hat.
      */
@@ -134,6 +151,7 @@ public class SsidSammelFragment extends Fragment implements View.OnClickListener
             return;
         }
 
+        _zeitmessungStart = System.nanoTime();
         registerBroadcastReceiver();
 
         if (_loescheVorSucheCheckbox.isChecked() == false) {
@@ -166,14 +184,21 @@ public class SsidSammelFragment extends Fragment implements View.OnClickListener
 
             unregisterBroadcastReceiver();
 
+            _zeitmessungEnde = System.nanoTime();
+
             List<ScanResult> scanResultList = _wifiManager.getScanResults();
 
             Collections.sort(scanResultList, SCAN_RESULT_COMPARATOR);
 
             int anzResult = scanResultList.size();
 
+            long zeitDiffMillisekunden = ( _zeitmessungEnde - _zeitmessungStart ) / NANOSEKUNDEN_PRO_MILLISEKUNDEN;
+
             StringBuffer sb = new StringBuffer();
-            sb.append("Anzahl WiFi-Netze gefunden: " + anzResult + "\n\n");
+            sb.append("Anzahl WiFi-Netze gefunden (");
+            sb.append(zeitDiffMillisekunden).append(" ms): ");
+            sb.append( anzResult);
+            sb.append("\n\n");
 
             for (ScanResult scanResult : scanResultList) {
 
