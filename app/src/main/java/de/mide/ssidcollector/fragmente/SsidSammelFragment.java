@@ -42,7 +42,7 @@ public class SsidSammelFragment extends Fragment implements View.OnClickListener
                                         new IntentFilter(SCAN_RESULTS_AVAILABLE_ACTION);
 
     /** Eine Millisekunde hat 1 Mio Nanosekunden, siehe auch diesen
-     * <a href="https://de.wikipedia.org/wiki/Sekunde#Mit_der_Sekunde_zusammenh%C3%A4ngende_Einheiten"">Artikel auf dt. Wikipedia.</a>
+     * <a href="https://de.wikipedia.org/w/index.php?title=Sekunde&oldid=198467543#Mit_der_Sekunde_zusammenh%C3%A4ngende_Einheiten">Artikel auf dt. Wikipedia.</a>
      */
     private static long NANOSEKUNDEN_PRO_MILLISEKUNDEN = 1_000_000;
 
