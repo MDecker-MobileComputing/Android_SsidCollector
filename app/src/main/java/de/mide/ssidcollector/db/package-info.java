@@ -43,8 +43,8 @@
  * </pre>
  * <br><br>
  *
- * Konfiguration in Datei {@code app/build.gradle}, damit während Compilierung keine Warnung kommt, weil
- * Schema nicht ausgegeben werden kann
+ * Konfiguration in Datei {@code app/build.gradle}, damit während Compilierung keine Warnung kommt,
+ * weil Schema nicht ausgegeben werden kann
  * (siehe auch <a href="https://stackoverflow.com/a/44424908/1364368">diese Antwort</a>):
  * <pre>
  * javaCompileOptions {
@@ -53,6 +53,6 @@
  *     }
  * }
  * </pre>
- * Schema wird in Form einer JSON-Datei in Ordner {@code app/schemas} geschrieben.
+ * Das Schema wird in Form einer JSON-Datei in Ordner {@code app/schemas} geschrieben.
  */
 package de.mide.ssidcollector.db;
