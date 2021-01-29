@@ -7,6 +7,11 @@ import java.util.Date;
 /**
  * Die Methoden in dieser Klasse wandeln in den Entity-Klassen verwendete Datentypen, die
  * nicht von SQLite gespeichert werden können, in Datentypen um, die SQLite unterstützt.
+ * <br><br>
+ *
+ * Alle Konverter-Klasse müssen in der von <code>RoomDatabase</code> abgeleiteten Klasse
+ * (in diesem Projekt: {@link MeineDatenbank} mit der Annotation <code>TypeConverters</code>
+ * deklariert werden.
  */
 public class MeineTypeConverter {
 

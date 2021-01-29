@@ -10,8 +10,8 @@ import androidx.room.TypeConverters;
 
 /**
  * Die Datenbank-Klasse enthält eine Getter-Methode für die DAOs.
- * Alle Entity- und TypeConverter-Klasse müssen dieser Klasse mit den entsprechenden Annotationen
- * hinzugefügt werden.
+ * Alle Entity- und TypeConverter-Klassen müssen dieser Klasse mit der Annotation
+ * <code>TypeConverters</code>hinzugefügt werden.
  * <br><br>
  *
  * DAO-Methoden müssen in einem Worker-Thread ausgeführt werden.
