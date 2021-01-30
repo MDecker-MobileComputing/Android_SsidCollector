@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Interface aus dem das DAO erzeugt wird (DAO: Data Access Object), siehe auch die Doku
- * <a href="https://developer.android.com/training/data-storage/room/accessing-data>hier</a>.
+ * <a href="https://developer.android.com/training/data-storage/room/accessing-data">hier</a>.
  * DAO enthält Methoden für CRUD-Operationen auf (einer) DB-Tabelle(n).
  * <br><br>
  *
