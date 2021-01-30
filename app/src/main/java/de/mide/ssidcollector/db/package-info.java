@@ -19,7 +19,7 @@
  * <b>Verwendung:</b>
  * <ul>
  *     <li>Singleton-Instanz von {@code MeineDatenbank} holen.</li>
- *     <li>Relevantes DAO mit entsprechender Getter-Methode von {@code MeineDatenbank}-Instanz.</li>
+ *     <li>Relevantes DAO mit entsprechender Getter-Methode von {@code MeineDatenbank}-Instanz holen.</li>
  *     <li>Methode für gewünschte DB-Operation an DAO-Objekt aufrufen.</li>
  * </ul>
  * <br><br>
