@@ -11,7 +11,7 @@ import android.net.wifi.ScanResult;
 public class ScanErgebnisComparator implements Comparator<ScanResult> {
 
     /**
-     * Vergleich zwei {@link ScanResult}-Objekte.
+     * Vergleich von zwei {@link ScanResult}-Objekten.
      *
      * @param sr1  ScanResult-Objekt 1 (linke Seite des Vergleichs)
      *
